@@ -1,5 +1,5 @@
 <?php
-namespace spider;
+namespace yizenghui\Spider;
 
 /**
  * Class BookInfo

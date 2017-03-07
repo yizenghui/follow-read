@@ -1,16 +1,15 @@
 <?php
-namespace yizenghui\spider\QiDian;
+namespace  yizenghui\Spider\Driver\Book;
 
 use QL\QueryList;
-use phpQuery;
-
+use yizenghui\Spider\Driver\Book\Common\basic;
 use yizenghui\Support\Str;
 
 /**
- * Class BookInfo
- * @package spider\QiDian
+ * Class QiDian
+ * @package yizenghui\Spider\Driver\Book
  */
-class BookInfo
+class QiDian implements basic
 {
 
     /**
@@ -24,7 +23,12 @@ class BookInfo
     protected $book_info_html;
 
 
-    public function __construct($book_id){
+    public function __construct(){}
+
+    /**
+     * @param int $book_id
+     */
+    public function init($book_id){
         $this->book_id = $book_id;
     }
 
@@ -36,7 +40,6 @@ class BookInfo
         if($this->book_info_html){
             return $this->book_info_html;
         }
-        echo 'spider...';
         $ql = QueryList::Query($this->getInfoUrl(),[]);
         $this->book_info_html = $ql->getHtml(false);
         return $this->book_info_html;
@@ -95,46 +98,5 @@ class BookInfo
         }
         return $chapters;
     }
-
-
-    /**
-     * 通过book_id获取详细
-     * @param $book_id
-     * @return array
-     */
-    public function find($book_id){
-
-        //需要采集的目标页面
-        $page = 'http://book.qidian.com/info/'.$book_id;
-        //采集规则
-        $reg = array(
-            //采集文章标题
-            'title' => array('.book-info h1 em','text'),
-            'author' => array('.book-info h1 a','text'),
-            'intro' => array('.book-info .intro','text'),
-//            'book-state' => array('.book-state','html'),
-            'book-intro' => array('.book-intro p:eq(0)','text'),
-
-        );
-        $ql = QueryList::Query($page,$reg);
-
-        $html = $ql->getHtml(false);
-        $data = $ql->getData();
-        $reg_list = array(
-            // 章节标题
-            'title' => array('.catalog-content-wrap .volume-wrap a','text'),
-            // 章节链接
-            'link' => array('.catalog-content-wrap .volume-wrap a','href'),
-        );
-//        echo $html;die;
-        $ql = QueryList::Query($html,$reg_list);
-        $links = $ql->getData();
-        //打印结果
-
-        $data['links'] = $links;
-//        print_r($data);
-        return $data;
-    }
-
 
 }
