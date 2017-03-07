@@ -27,6 +27,16 @@ class Users extends AbstractMigration
      */
     public function change()
     {
-
+        // create the table
+        $table = $this->table('users',array('engine'=>'MyISAM'));
+        $table->addColumn('nickname', 'string',array('limit' => 15,'default'=>'','comment'=>'昵称'))
+            ->addColumn('open_id', 'string',array('limit' => 64,'comment'=>'wechat open_id'))
+            ->addColumn('safe_email', 'string',array('limit' => 64,'comment'=>'安全邮箱'))
+            ->addColumn('head', 'string',array('limit' => 256,'comment'=>'头像'))
+            ->addColumn('subscribe', 'boolean',array('limit' => 1,'default'=>1,'comment'=>'关注'))
+            ->addColumn('create_at', 'datetime',array('default'=>0,'comment'=>'添加时间'))
+            ->addColumn('update_at', 'datetime',array('default'=>0,'comment'=>'更新时间'))
+            ->addIndex(array('open_id'), array('unique' => true))
+            ->create();
     }
 }

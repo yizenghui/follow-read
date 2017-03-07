@@ -27,6 +27,10 @@ class Follows extends AbstractMigration
      */
     public function change()
     {
-
+        // create the table
+        $table = $this->table('follows',array('engine'=>'MyISAM'));
+        $table->addColumn('user_id', 'integer',array('limit' => 11,'default'=>0,'comment'=>'用户ID'))
+            ->addColumn('book_id', 'integer',array('limit' => 11,'default'=>0,'comment'=>'书籍ID'))
+            ->create();
     }
 }
