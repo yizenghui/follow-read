@@ -41,7 +41,7 @@ return [
     'api'     => [    // 数据接口
         '__file__'   => ['common.php'],
         '__dir__'    => ['controller', 'model'],
-        'controller' => ['Book','User','Wechat'],
+        'controller' => ['Book','User','Wechat','Task'],
         'model'      => ['Book','User','Follow'],
     ],
     // 其他更多的模块定义

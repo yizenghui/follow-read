@@ -14,6 +14,7 @@ class Follow
         if($user){
 
             $books = $user->follows;
+//            var_export($books);die;
 //            dump($books);die;
             return view('index',compact('books','user'));
         }

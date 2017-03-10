@@ -62,8 +62,8 @@ class Book
 //        dump($info);die;
         $chapter = $this->chapter();
         $end_chapter = end($chapter);
+//        print_r($end_chapter);die;
         $info['end_chapter'] = $end_chapter;
-
         $info['source_from'] = $this->book_spider->position();
         return $info;
     }

@@ -54,6 +54,11 @@ class QiDian implements basic
     }
 
 
+    public function chapterApiUrl(){
+        return 'http://book.qidian.com/ajax/book/category?_csrfToken=&bookId='.$this->book_id;
+    }
+
+
     public function position(){
         return 'qidian.com&'.$this->book_id;
     }
@@ -83,6 +88,8 @@ class QiDian implements basic
      * @return mixed
      */
     public function chapter(){
+
+
         $reg_list = array(
             // 章节标题
             'title' => array('.catalog-content-wrap .volume-wrap a','text'),
@@ -102,6 +109,32 @@ class QiDian implements basic
                 }
             }
         }
+
+        // 有部分书籍的章节是ajax加载的,需要扩展
+        if(empty($chapters)){
+            // 目前可以直接通过 file_get_contents 获取json PS 通过 http://book.qidian.com/info/3544491 可以知道 _csrfToken 只是用js获取浏览器 cookie
+            $json_str = file_get_contents($this->chapterApiUrl());
+            $data = json_decode($json_str,true);
+            if($data && is_array($data)){
+                if($data['data']['vs'] && is_array($data['data']['vs'])){
+                    foreach($data['data']['vs'] as $volume){
+                        if($volume['cs'] && is_array($volume['cs'])){
+                            foreach($volume['cs'] as $item){
+                                // VIP状态
+                                if($volume['vS'] ==1){
+                                    $link_url = '//vipreader.qidian.com/chapter/'.$this->book_id.'/'.$item['id'];
+                                }else{
+                                    $link_url = '//read.qidian.com/chapter/'.$item['cU'];
+                                }
+
+                                $chapters[]  = ['title'=>$item['cN'],'link'=>$link_url];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+//print_r($chapters);die;
         return $chapters;
     }
 
