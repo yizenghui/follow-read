@@ -8,7 +8,7 @@ class Index
     // 返回书籍列表
     public function index()
     {
-        $books = \app\book\model\Book::all();
+        $books = \app\api\model\Book::all();
 
         return view('index',['books'=>$books]);
     }

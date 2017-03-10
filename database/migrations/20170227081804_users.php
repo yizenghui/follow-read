@@ -34,8 +34,8 @@ class Users extends AbstractMigration
             ->addColumn('safe_email', 'string',array('limit' => 64,'comment'=>'安全邮箱'))
             ->addColumn('head', 'string',array('limit' => 256,'comment'=>'头像'))
             ->addColumn('subscribe', 'boolean',array('limit' => 1,'default'=>1,'comment'=>'关注'))
-            ->addColumn('create_at', 'datetime',array('default'=>0,'comment'=>'添加时间'))
-            ->addColumn('update_at', 'datetime',array('default'=>0,'comment'=>'更新时间'))
+            ->addColumn('create_time', 'integer',array('limit' => 11,'default'=>0,'comment'=>'添加时间'))
+            ->addColumn('update_time', 'integer',array('limit' => 11,'default'=>0,'comment'=>'更新时间'))
             ->addIndex(array('open_id'), array('unique' => true))
             ->create();
     }

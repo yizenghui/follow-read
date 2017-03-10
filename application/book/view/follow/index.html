@@ -1,14 +1,14 @@
-<a href="/book/create">add</a>
+/ back <a href="/book">book list</a>
 <hr>
-book list:
-<br/>
-<br/>
+
+已关注书籍
+<hr>
+
 <br/>
 
 {volist name="books" id="book"}
 <a href="/book/info?id={$book->id}">{$book->name}</a>
-
-{if condition="checkUserFollowBook(sign(),$book)"}
+{if condition="checkUserFollowBook($user,$book)"}
 <a href="/api/book/unfollow?id={$book->id}">取消关注</a>
 {else /}
 <a href="/api/book/follow?id={$book->id}">关注</a>

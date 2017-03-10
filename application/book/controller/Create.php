@@ -4,6 +4,7 @@ namespace app\book\controller;
 use think\Request;
 use yizenghui\Support\Str;
 use \yizenghui\Spider\Book as BookSpider;
+use \app\book\model\Book;
 
 class Create
 {
@@ -15,12 +16,49 @@ class Create
         return view('index');
     }
 
+    public function post(Request $request){
+        $spider_book = new BookSpider($request->post('url'));
+        $data = $spider_book->data();
+        if($data){
+            $book = Book::get(['source_from' => $data['source_from']]);
+            if($book){
 
-    public function save(Request $request){
-        $book = new BookSpider($request->post('url'));
+            }
 
-        dump($book->info());
-        dump($book->chapter());
+            dump($book);
+        }
+
+        return '';
+    }
+
+    public function test()
+    {
+
+        $book = new BookSpider('http://book.qidian.com/info/1001389020');
+        dump($book->data());
+//        dump($book->chapter());
+    }
+
+
+    public function save(Request $request)
+    {
+        $spider_book = new BookSpider($request->post('url'));
+        $data = $spider_book->data();
+        if($data){
+            $book = Book::get(['source_from' => $data['source_from']]);
+            if($book){
+
+            }
+
+            dump($book);
+        }
+
+//        $book = Book::firstOrCreate();
+
+        //        $book = Book::firstOrCreate();
+
+//        dump($book->info());
+//        dump($book->chapter());
 
 /*
         $url_info = $this->explain($request->post('url'));

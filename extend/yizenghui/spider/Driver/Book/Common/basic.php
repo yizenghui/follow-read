@@ -27,4 +27,13 @@ Interface  basic
        */
       function chapter();
 
+
+      /**
+       * 返回书箱的资源定位标识(唯一)
+       * @return mixed
+       */
+      function position();
+
+
+
 }

@@ -35,6 +35,9 @@ class Book
         }
 
         $this->book_spider = $this->CreateSpider($this->book_config['driver']);
+        if( !$this->book_spider ){
+            // 抛出错误
+        }
         $this->book_spider->init($this->book_config['id']);
     }
 
@@ -45,11 +48,24 @@ class Book
      */
     public function CreateSpider( $driver )
     {
-        // TODO 检查类是否存在
         $class = "\\yizenghui\\Spider\\Driver\\Book\\$driver";
         if(class_exists($class)) return new $class();
-        echo 'xxxxx';
         return false;
+    }
+
+    /**
+     * 数据包
+     * @return mixed
+     */
+    public function data(){
+        $info = $this->info();
+//        dump($info);die;
+        $chapter = $this->chapter();
+        $end_chapter = end($chapter);
+        $info['end_chapter'] = $end_chapter;
+
+        $info['source_from'] = $this->book_spider->position();
+        return $info;
     }
 
     /**
@@ -57,7 +73,7 @@ class Book
      * @return mixed
      */
     public function info(){
-        return $this->book_spider->info();
+        return $this->translateInfo($this->book_spider->info());
     }
 
     /**
@@ -73,5 +89,21 @@ class Book
      */
     public function conf(){
         return $this->book_config;
+    }
+
+    /**
+     * 把采集来的详细数据翻译成我们平台使用的数据
+     */
+    public function translateInfo($info){
+        //TODO 这个以后再考虑可视化，但是要先根据不同的站点的数据做个转化先
+        return $info;
+    }
+
+    /**
+     * 把采集来的列表数据翻译成我们平台使用的数据
+     */
+    public function translateChapter($chapter){
+        //TODO 这个以后再考虑可视化, 但是要先根据不同的站点的数据做个转化先
+        return $chapter;
     }
 }

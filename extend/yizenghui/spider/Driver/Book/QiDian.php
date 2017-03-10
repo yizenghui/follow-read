@@ -40,13 +40,22 @@ class QiDian implements basic
         if($this->book_info_html){
             return $this->book_info_html;
         }
-        $ql = QueryList::Query($this->getInfoUrl(),[]);
+        $ql = QueryList::Query($this->url(),[]);
         $this->book_info_html = $ql->getHtml(false);
         return $this->book_info_html;
     }
 
-    public function getInfoUrl(){
+    /**
+     * 根据book_id信息，返回可访问的url (章节主页)
+     * @return string
+     */
+    public function url(){
         return 'http://book.qidian.com/info/'.$this->book_id;
+    }
+
+
+    public function position(){
+        return 'qidian.com&'.$this->book_id;
     }
 
     /**
@@ -58,18 +67,15 @@ class QiDian implements basic
         //采集规则
         $reg = array(
             //采集文章标题
-            'title' => array('.book-info h1 em','text'),
+            'name' => array('.book-info h1 em','text'),
             'author' => array('.book-info h1 a','text'),
-            'intro' => array('.book-info .intro','text'),
-            'book-state' => array('.book-state','html'),
-            'book-intro' => array('.book-intro p:eq(0)','text'),
+//            'intro' => array('.book-info .intro','text'),
+//            'book-state' => array('.book-state','html'),
+            'intro' => array('.book-intro p:eq(0)','text'),
 
         );
-        $ql = QueryList::Query($this->getInfoHtml(),$reg);
-
-        $data = $ql->getData();
-
-        return $data;
+        $data = QueryList::Query($this->getInfoHtml(),$reg)->data;
+        return current($data);
     }
 
     /**

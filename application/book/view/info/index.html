@@ -1,0 +1,22 @@
+/ back <a href="/book">book list</a>
+<hr>
+
+编号：{$book->id}
+<br>
+书名：{$book->name}
+<br>
+作者：{$book->author}
+<br>
+简介：{$book->intro}
+<br>
+
+
+当前共有{$book->follows()->count()}人关注！
+
+
+{if condition="checkUserFollowBook(sign(),$book)"}
+<a href="/api/book/unfollow?id={$book->id}">取消关注</a>
+{else /}
+<a href="/api/book/follow?id={$book->id}">关注</a>
+{/if}
+
